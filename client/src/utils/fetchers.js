@@ -18,13 +18,15 @@ async function fetchBinary(url) {
 /**
  * @template T
  * @param {string} url
+ * @param {object} query
  * @returns {Promise<T>}
  */
-async function fetchJSON(url) {
+async function fetchJSON(url, query) {
   const result = await $.ajax({
     async: false,
     dataType: 'json',
     method: 'GET',
+    data: query,
     url,
   });
   return result;
