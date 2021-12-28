@@ -5,13 +5,14 @@ module.exports = {
       {
         corejs: '3',
         modules: 'commonjs',
-        useBuiltIns: false,
+        targets: 'last 1 Chrome major version',
+        useBuiltIns: 'usage',
       },
     ],
     [
       '@babel/preset-react',
       {
-        development: true,
+        development: false,
       },
     ],
   ],
