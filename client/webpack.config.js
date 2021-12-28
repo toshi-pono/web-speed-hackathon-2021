@@ -84,6 +84,10 @@ const config = {
       fs: false,
       path: false,
     },
+    alias: {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+    },
   },
 };
 
