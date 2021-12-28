@@ -9,6 +9,16 @@ import sharp from 'sharp';
  * @returns {Promise<Uint8Array>}
  */
 async function convertImage(buffer, options) {
+  if (options.extension === 'webp') {
+    return sharp(buffer)
+      .resize({
+        fit: 'cover',
+        height: options.height,
+        width: options.width,
+      })
+      .webp({ lossless: true })
+      .toBuffer();
+  }
   return sharp(buffer)
     .resize({
       fit: 'cover',
