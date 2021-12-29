@@ -53,7 +53,7 @@ const PausableMovie = ({ src }) => {
   return (
     <AspectRatioBox aspectHeight={1} aspectWidth={1}>
       <button className="group relative block w-full h-full" onClick={handleClick} type="button">
-        <video ref={videoRef} className="w-full" preload='metadata' loop muted autoPlay>
+        <video ref={videoRef} className="w-full" preload='metadata' loop muted autoPlay paused>
           <source src={src} type="video/webm" />
         </video>
         <div
