@@ -5,15 +5,14 @@
   "license": "MPL-2.0",
   "main": "src/index.js",
   "scripts": {
-    "build": "echo noop",
+    "build": "babel ./src -d dist",
     "prestart": "npm-run-all prestart:clean prestart:init",
-    "start": "babel-node --experimental-wasm-threads src/index.js",
+    "start": "node --experimental-wasm-threads dist/index.js",
     "prestart:clean": "rimraf ../upload",
     "prestart:init": "mkdirp ../upload/images ../upload/movies ../upload/sounds"
   },
   "dependencies": {
     "@babel/core": "7.16.0",
-    "@babel/node": "7.16.0",
     "@babel/preset-env": "7.16.4",
     "@ffmpeg/core": "0.10.0",
     "@ffmpeg/ffmpeg": "0.10.1",
@@ -38,6 +37,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
     "@types/bcrypt": "10.0.28-alpha",
     "@types/body-parser": "1.19.2",
     "@types/connect-history-api-fallback": "1.3.5",
