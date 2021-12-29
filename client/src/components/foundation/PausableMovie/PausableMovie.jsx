@@ -1,8 +1,5 @@
 import classNames from 'classnames';
-import { Animator, Decoder } from 'gifler';
-import { GifReader } from 'omggif';
 import React from 'react';
-import { useEffect } from 'react';
 
 import { useFetch } from '../../../hooks/use_fetch';
 import { fetchBinary } from '../../../utils/fetchers';
@@ -23,7 +20,7 @@ const PausableMovie = ({ src }) => {
 
   /** @type {React.RefCallback<HTMLVideoElement>} */
   const videoRef = React.useRef(null);
-  useEffect(() => {
+  React.useEffect(() => {
     // 視覚効果 off のとき GIF を自動再生しない
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setIsPlaying(false);
@@ -32,7 +29,7 @@ const PausableMovie = ({ src }) => {
       setIsPlaying(true);
       videoRef.current?.play();
     }
-  }, [])
+  }, []);
 
   const [isPlaying, setIsPlaying] = React.useState(true);
   const handleClick = React.useCallback(() => {
@@ -53,9 +50,7 @@ const PausableMovie = ({ src }) => {
   return (
     <AspectRatioBox aspectHeight={1} aspectWidth={1}>
       <button className="group relative block w-full h-full" onClick={handleClick} type="button">
-        <video ref={videoRef} className="w-full" preload='metadata' loop muted autoPlay paused>
-          <source src={src} type="video/webm" />
-        </video>
+        <video src={src} ref={videoRef} className="w-full" loop muted autoPlay={!window.matchMedia('(prefers-reduced-motion: reduce)').matches} />
         <div
           className={classNames(
             'absolute left-1/2 top-1/2 flex items-center justify-center w-16 h-16 text-white text-3xl bg-black bg-opacity-50 rounded-full transform -translate-x-1/2 -translate-y-1/2',

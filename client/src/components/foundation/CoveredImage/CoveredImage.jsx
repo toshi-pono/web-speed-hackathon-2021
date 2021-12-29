@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-import sizeOf from 'image-size';
 import React from 'react';
 
 import { useFetch } from '../../../hooks/use_fetch';
