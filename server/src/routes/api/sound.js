@@ -44,7 +44,9 @@ router.post('/sounds', async (req, res) => {
 
   const { artist, title } = await extractMetadataFromSound(req.body);
 
-  await Promise.all([convertFile(req.body, soundId), generateMetaFile(req.body, soundId)]);
+  // TODO: Promise.all したいけど……？
+  await convertFile(req.body, soundId);
+  await generateMetaFile(req.body, soundId);
 
   return res.status(200).type('application/json').send({ artist, id: soundId, title });
 });

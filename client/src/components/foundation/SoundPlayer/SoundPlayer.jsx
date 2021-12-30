@@ -1,8 +1,9 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 import { useFetch } from '../../../hooks/use_fetch';
-import { fetchBinary } from '../../../utils/fetchers';
-import { getSoundPath } from '../../../utils/get_path';
+import { fetchJSON } from '../../../utils/fetchers';
+import { getSoundWavePath, getSoundPath } from '../../../utils/get_path';
 import { AspectRatioBox } from '../AspectRatioBox';
 import { FontAwesomeIcon } from '../FontAwesomeIcon';
 import { SoundWaveSVG } from '../SoundWaveSVG';
@@ -16,11 +17,8 @@ import { SoundWaveSVG } from '../SoundWaveSVG';
  * @type {React.VFC<Props>}
  */
 const SoundPlayer = ({ sound }) => {
-  const { data, isLoading } = useFetch(getSoundPath(sound.id), fetchBinary);
-
-  const blobUrl = React.useMemo(() => {
-    return data !== null ? URL.createObjectURL(new Blob([data])) : null;
-  }, [data]);
+  const { data:metaData, isLoading } = useFetch(getSoundWavePath(sound.id), fetchJSON);
+  const soundPath = React.useMemo(() => getSoundPath(sound.id), [sound.id]);
 
   const [currentTimeRatio, setCurrentTimeRatio] = React.useState(0);
   /** @type {React.ReactEventHandler<HTMLAudioElement>} */
@@ -43,13 +41,9 @@ const SoundPlayer = ({ sound }) => {
     });
   }, []);
 
-  if (isLoading || data === null || blobUrl === null) {
-    return null;
-  }
-
   return (
     <div className="flex items-center justify-center w-full h-full bg-gray-300">
-      <audio ref={audioRef} loop={true} onTimeUpdate={handleTimeUpdate} src={blobUrl} />
+      <audio ref={audioRef} loop={true} src={soundPath} preload="none" onTimeUpdate={handleTimeUpdate} />
       <div className="p-2">
         <button
           className="flex items-center justify-center w-8 h-8 text-white text-sm bg-blue-600 rounded-full hover:opacity-75"
@@ -66,7 +60,11 @@ const SoundPlayer = ({ sound }) => {
           <AspectRatioBox aspectHeight={1} aspectWidth={10}>
             <div className="relative w-full h-full">
               <div className="absolute inset-0 w-full h-full">
-                <SoundWaveSVG soundData={data} />
+                {
+                  metaData === null || isLoading ?
+                    <></> :
+                  <SoundWaveSVG max={metaData.max} peaks={metaData.peaks} />
+                }
               </div>
               <div
                 className="absolute inset-0 w-full h-full bg-gray-300 opacity-75"
