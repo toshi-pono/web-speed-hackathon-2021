@@ -4,12 +4,14 @@
   "version": "0.0.1",
   "license": "MPL-2.0",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "build": "babel ./src -d dist",
     "prestart": "npm-run-all prestart:clean prestart:init",
     "start": "node --experimental-wasm-threads dist/index.js",
     "prestart:clean": "rimraf ../upload",
-    "prestart:init": "mkdirp ../upload/images ../upload/movies ../upload/sounds"
+    "prestart:init": "mkdirp ../upload/images ../upload/movies ../upload/sounds",
+    "gen-sound-meta": "node --experimental-wasm-threads ./sound_wave.js"
   },
   "dependencies": {
     "@babel/core": "7.16.0",
@@ -47,7 +49,8 @@
     "@types/serve-static": "1.13.10",
     "@types/sharp": "0.29.4",
     "@types/sqlite3": "3.1.7",
-    "@types/uuid": "8.3.3"
+    "@types/uuid": "8.3.3",
+    "web-audio-engine": "^0.13.4"
   },
   "engines": {
     "node": "16.x.x"
