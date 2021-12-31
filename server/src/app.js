@@ -28,6 +28,20 @@ app.use((_req, res, next) => {
   return next();
 });
 
+app.get(/\.(js)$/, (req, res, next) => {
+  req.url = `${req.url}.br`;
+  res.set('Content-Type', 'application/javascript');
+  res.set('Content-Encoding', 'br');
+  next();
+});
+
+app.get(/\.(css)$/, (req, res, next) => {
+  req.url = `${req.url}.br`;
+  res.set('Content-Type', 'text/css');
+  res.set('Content-Encoding', 'br');
+  next();
+});
+
 app.use('/api/v1', apiRouter);
 app.use(staticRouter);
 

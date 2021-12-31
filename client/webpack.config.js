@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const BrotliPlugin = require('brotli-webpack-plugin');
 
 const SRC_PATH = path.resolve(__dirname, './src');
 const PUBLIC_PATH = path.resolve(__dirname, '../public');
@@ -68,6 +69,12 @@ const config = {
     new HtmlWebpackPlugin({
       inject: false,
       template: path.resolve(SRC_PATH, './index.html'),
+    }),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8,
     }),
   ],
   resolve: {
