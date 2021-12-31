@@ -16,8 +16,6 @@
     "fast-average-color": "7.0.1",
     "jquery": "3.6.0",
     "jquery-binarytransport": "1.0.0",
-    "moment": "2.29.1",
-    "moment-locales-webpack-plugin": "^1.2.0",
     "normalize.css": "8.0.1",
     "omggif": "1.0.10",
     "pako": "2.0.4",

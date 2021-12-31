@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -35,6 +34,8 @@ const isClickedAnchorOrButton = (target, currentTarget) => {
 const TimelineItem = ({ post }) => {
   const navigate = useNavigate();
 
+  const createdAt = React.useMemo(() => new Date(post.createdAt), [post.createdAt]);
+
   /**
    * ボタンやリンク以外の箇所をクリックしたとき かつ 文字が選択されてないとき、投稿詳細ページに遷移する
    * @type {React.MouseEventHandler}
@@ -70,8 +71,8 @@ const TimelineItem = ({ post }) => {
             </Link>
             <span className="pr-1 text-gray-500">-</span>
             <Link className="pr-1 text-gray-500 hover:underline" to={`/posts/${post.id}`}>
-              <time dateTime={moment(post.createdAt).toISOString()}>
-                {moment(post.createdAt).locale('ja').format('LL')}
+              <time dateTime={createdAt.toISOString()}>
+                {`${createdAt.getFullYear()}年${createdAt.getMonth() + 1}月${createdAt.getDate()}日`}
               </time>
             </Link>
           </p>

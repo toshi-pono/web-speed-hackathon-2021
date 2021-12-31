@@ -1,5 +1,4 @@
 import FastAverageColor from 'fast-average-color';
-import moment from 'moment';
 import React from 'react';
 
 import { getProfileImagePath } from '../../../utils/get_path';
@@ -13,6 +12,7 @@ import { FontAwesomeIcon } from '../../foundation/FontAwesomeIcon';
 /** @type {React.VFC<Props>} */
 const UserProfileHeader = ({ user }) => {
   const [averageColor, setAverageColor] = React.useState(null);
+  const createdAt = React.useMemo(() => new Date(user.createdAt), [user.createdAt]);
 
   // 画像の平均色を取得します
   /** @type {React.ReactEventHandler<HTMLImageElement>} */
@@ -38,8 +38,8 @@ const UserProfileHeader = ({ user }) => {
             <FontAwesomeIcon iconType="calendar-alt" styleType="regular" />
           </span>
           <span>
-            <time dateTime={moment(user.createdAt).toISOString()}>
-              {moment(user.createdAt).locale('ja').format('LL')}
+            <time dateTime={createdAt.toISOString}>
+              {`${createdAt.getFullYear()}年${createdAt.getMonth() + 1}月${createdAt.getDate()}日`}
             </time>
             からサービスを利用しています
           </span>
