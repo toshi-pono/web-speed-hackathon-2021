@@ -1,19 +1,3 @@
-import { gzip } from 'pako';
-
-/**
- * @param {string} url
- * @returns {Promise<ArrayBuffer>}
- */
-async function fetchBinary(url) {
-  const result = await $.ajax({
-    dataType: 'binary',
-    method: 'GET',
-    responseType: 'arraybuffer',
-    url,
-  });
-  return result;
-}
-
 /**
  * @template T
  * @param {string} url
@@ -21,13 +5,9 @@ async function fetchBinary(url) {
  * @returns {Promise<T>}
  */
 async function fetchJSON(url, query = {}) {
-  const result = await $.ajax({
-    dataType: 'json',
-    method: 'GET',
-    data: query,
-    url,
-  });
-  return result;
+  const query_params = new URLSearchParams(query);
+  const res = await fetch(url + '?' + query_params.toString());
+  return res.ok ? res.json() : Promise.reject();
 }
 
 /**
@@ -37,17 +17,15 @@ async function fetchJSON(url, query = {}) {
  * @returns {Promise<T>}
  */
 async function sendFile(url, file) {
-  const result = await $.ajax({
-    data: file,
-    dataType: 'json',
+  const res = await fetch(url, {
+    method: 'POST',
+    cache: 'no-cache',
     headers: {
       'Content-Type': 'application/octet-stream',
     },
-    method: 'POST',
-    processData: false,
-    url,
+    body: file,
   });
-  return result;
+  return res.ok ? res.json() : Promise.reject();
 }
 
 /**
@@ -57,22 +35,15 @@ async function sendFile(url, file) {
  * @returns {Promise<T>}
  */
 async function sendJSON(url, data) {
-  const jsonString = JSON.stringify(data);
-  const uint8Array = new TextEncoder().encode(jsonString);
-  const compressed = gzip(uint8Array);
-
-  const result = await $.ajax({
-    data: compressed,
-    dataType: 'json',
+  const res = await fetch(url, {
+    method: 'POST',
+    cache: 'no-cache',
     headers: {
-      'Content-Encoding': 'gzip',
       'Content-Type': 'application/json',
     },
-    method: 'POST',
-    processData: false,
-    url,
+    body: JSON.stringify(data),
   });
-  return result;
+  return res.ok ? res.json() : Promise.reject();
 }
 
-export { fetchBinary, fetchJSON, sendFile, sendJSON };
+export { fetchJSON, sendFile, sendJSON };
