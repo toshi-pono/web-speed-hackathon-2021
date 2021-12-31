@@ -16,8 +16,6 @@ import { FontAwesomeIcon } from '../FontAwesomeIcon';
  * @type {React.VFC<Props>}
  */
 const PausableMovie = ({ src }) => {
-  const { data, isLoading } = useFetch(src, fetchBinary);
-
   /** @type {React.RefCallback<HTMLVideoElement>} */
   const videoRef = React.useRef(null);
   React.useEffect(() => {
@@ -42,10 +40,6 @@ const PausableMovie = ({ src }) => {
       return !isPlaying;
     });
   }, []);
-
-  if (isLoading || data === null) {
-    return null;
-  }
 
   return (
     <AspectRatioBox aspectHeight={1} aspectWidth={1}>
